@@ -1,0 +1,364 @@
+/* ----------------------------------------------------------------------------
+   VoiceClone Studio — monochrome editorial theme.
+
+   Warm off-white paper, near-black ink, subtle grid in the backdrop. No
+   saturated colours; status pills are the only place colour appears, and
+   only as a hint. Cards are clean white with a soft 1 px border. The whole
+   thing reads like an editorial product page rather than a flashy app.
+---------------------------------------------------------------------------- */
+
+:root {
+  /* Backgrounds — warm whites and a single deeper tone for sunk panels. */
+  --bg:           #F4F1EA;     /* warm paper */
+  --bg-alt:       #ECE7DC;
+  --bg-deep:      #DDD4C2;
+  --surface:      #FFFFFF;
+  --surface-2:    #FBF9F4;
+
+  /* Borders — pure-grayscale alpha so they read on every surface. */
+  --border:       rgba(10, 10, 10, 0.08);
+  --border-soft:  rgba(10, 10, 10, 0.05);
+  --border-strong:rgba(10, 10, 10, 0.16);
+
+  /* Ink — true neutral. */
+  --ink:          #0A0A0A;
+  --ink-2:        #2A2A2A;
+  --ink-3:        #6B7280;
+  --ink-4:        #9CA3AF;
+
+  /* Accent — black. The "primary CTA" pill in the reference is just black. */
+  --accent:       #0A0A0A;
+  --accent-hover: #1F1F1F;
+  --accent-soft:  rgba(10, 10, 10, 0.05);
+  --accent-ink:   #FFFFFF;
+
+  /* Status — keep them, but desaturated. They show up only in pills. */
+  --ok:           #15803D;
+  --ok-soft:      #DCFCE7;
+  --warn:         #92400E;
+  --warn-soft:    #FEF3C7;
+  --err:          #991B1B;
+  --err-soft:     #FEE2E2;
+  --info:         #1F2937;
+
+  /* Type — sans for everything by default; serif kept for the script
+     textarea where readability of long passages matters. */
+  --serif: 'Source Serif 4', 'Iowan Old Style', 'Charter', Georgia, serif;
+  --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:  'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Radius / shadow — minimal, editorial. */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --shadow-1: 0 1px 2px rgba(10, 10, 10, 0.04);
+  --shadow-2: 0 8px 28px -10px rgba(10, 10, 10, 0.10), 0 1px 3px rgba(10, 10, 10, 0.05);
+  --shadow-3: 0 22px 48px -16px rgba(10, 10, 10, 0.20), 0 4px 12px rgba(10, 10, 10, 0.08);
+
+  /* Glass tokens — kept (popovers still benefit), but tuned mild. */
+  --glass-fill:        rgba(255, 255, 255, 0.85);
+  --glass-fill-2:      rgba(255, 255, 255, 0.65);
+  --glass-fill-strong: rgba(255, 255, 255, 0.95);
+  --glass-border:      rgba(10, 10, 10, 0.06);
+  --glass-stroke:      rgba(10, 10, 10, 0.08);
+  --glass-blur:        saturate(140%) blur(14px);
+  --glass-blur-strong: saturate(160%) blur(20px);
+
+  /* Segmented bar tokens (still used by the sliders). */
+  --seg-on:    #0A0A0A;
+  --seg-off:   rgba(10, 10, 10, 0.18);
+  --seg-pitch: 4px;
+  --seg-bar:   2px;
+  --seg-h:     22px;
+  --seg-thumb: linear-gradient(180deg, #fff 0%, #F0EBE0 100%);
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Editorial backdrop: warm paper + a subtle 80 px grid of hairlines. The
+   grid sells the "data product" feel without dominating any card on top. */
+body { position: relative; }
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(10, 10, 10, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 10, 10, .045) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+body::after {
+  /* Faint film grain. Keeps the warm-white from feeling like printer paper. */
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(10, 10, 10, .03) 1px, transparent 1px);
+  background-size: 3px 3px;
+  z-index: 0;
+}
+
+#app { position: relative; z-index: 1; }
+
+h1, h2, h3, h4 {
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 8px 14px;
+  border-radius: 999px;          /* pill-shape per the reference */
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  transition: background .15s var(--ease), border-color .15s var(--ease),
+              transform .12s var(--ease), box-shadow .15s var(--ease);
+}
+button:hover {
+  background: var(--bg-alt);
+  border-color: var(--border-strong);
+}
+button:active { transform: translateY(1px); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+button.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px -8px rgba(10, 10, 10, 0.5), inset 0 1px 0 rgba(255,255,255,.08);
+}
+button.primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+button.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ink-3);
+}
+button.ghost:hover {
+  background: rgba(10, 10, 10, 0.05);
+  color: var(--ink);
+}
+button.ghost.xs, button.xs {
+  padding: 4px 10px;
+  font-size: 11.5px;
+}
+
+input[type="text"], input[type="number"], textarea, select {
+  font-family: inherit;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--ink);
+  padding: 10px 12px;
+  font-size: 14px;
+  width: 100%;
+  transition: border-color .15s var(--ease), box-shadow .15s var(--ease);
+  outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.08);
+}
+textarea { resize: vertical; line-height: 1.6; }
+
+::selection { background: rgba(10, 10, 10, 0.12); color: var(--ink); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: rgba(10, 10, 10, 0.18);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(10, 10, 10, 0.32); border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ----------------------------------------------------------------------------
+   Surface primitives — clean white cards, soft borders, minimal shadow.
+---------------------------------------------------------------------------- */
+.glass,
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+}
+
+/* Floating popovers keep a touch of blur so they read against any backdrop. */
+.glass-pop {
+  background: var(--glass-fill-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-3);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+.pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-4); }
+
+.pill.ok      { color: #14532D; background: #DCFCE7;  border-color: rgba(34,197,94,.32); }
+.pill.ok .dot { background: #15803D; box-shadow: 0 0 0 3px rgba(21,128,61,.18); }
+.pill.warn    { color: #78350F; background: #FEF3C7;  border-color: rgba(245,158,11,.32); }
+.pill.warn .dot { background: #92400E; }
+.pill.err     { color: #7F1D1D; background: #FEE2E2;  border-color: rgba(239,68,68,.32); }
+.pill.err .dot { background: #991B1B; }
+.pill.live    {
+  color: #FFFFFF; background: var(--ink); border-color: var(--ink);
+}
+.pill.live .dot {
+  background: #FFFFFF;
+  animation: live-pulse 1.4s var(--ease) infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(255,255,255,.6); }
+  50%      { transform: scale(1.18); box-shadow: 0 0 0 5px rgba(255,255,255,0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, var(--bg-alt) 0%, var(--bg-deep) 50%, var(--bg-alt) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up .35s var(--ease) both; }
+
+/* ----------------------------------------------------------------------------
+   Segmented "venetian blind" bar — kept from the previous theme. Now the
+   filled portion is true black and the empty portion is a soft gray, so it
+   matches the editorial palette.
+---------------------------------------------------------------------------- */
+.seg {
+  position: relative;
+  display: block;
+  flex: 1;
+  height: var(--seg-h);
+  border-radius: 6px;
+  --p: 0%;
+}
+.seg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right,
+    var(--seg-on) 0,
+    var(--seg-on) var(--p),
+    var(--seg-off) var(--p),
+    var(--seg-off) 100%
+  );
+  -webkit-mask-image: repeating-linear-gradient(to right,
+    #000 0, #000 var(--seg-bar),
+    transparent var(--seg-bar), transparent var(--seg-pitch)
+  );
+          mask-image: repeating-linear-gradient(to right,
+    #000 0, #000 var(--seg-bar),
+    transparent var(--seg-bar), transparent var(--seg-pitch)
+  );
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.seg input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  outline: none;
+  cursor: ew-resize;
+}
+.seg input[type=range]::-webkit-slider-runnable-track { height: 100%; background: transparent; border: 0; }
+.seg input[type=range]::-moz-range-track             { height: 100%; background: transparent; border: 0; }
+.seg input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: var(--seg-h);
+  border-radius: 4px;
+  background: #FFFFFF;
+  border: 1px solid var(--ink);
+  box-shadow: 0 2px 6px rgba(10, 10, 10, .25);
+  cursor: ew-resize;
+}
+.seg input[type=range]::-moz-range-thumb {
+  width: 14px;
+  height: var(--seg-h);
+  border-radius: 4px;
+  background: #FFFFFF;
+  border: 1px solid var(--ink);
+  box-shadow: 0 2px 6px rgba(10, 10, 10, .25);
+  cursor: ew-resize;
+}
+.seg input[type=range]:focus-visible { outline: none; }
+.seg input[type=range]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, .15), 0 2px 6px rgba(10, 10, 10, .25);
+}
+
+/* Indeterminate variant — used as a fallback when DotField isn't appropriate. */
+.seg.progress.indeterminate::before {
+  background: linear-gradient(90deg,
+    var(--seg-off) 0%, var(--seg-off) 30%,
+    var(--seg-on) 35%, var(--seg-on) 60%,
+    var(--seg-off) 65%, var(--seg-off) 100%);
+  background-size: 220% 100%;
+  animation: seg-slide 1.6s linear infinite;
+}
+@keyframes seg-slide {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -120% 0; }
+}

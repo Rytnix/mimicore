@@ -1,0 +1,40 @@
+# Installed dependencies and downloaded models
+/omnivoice_env/
+/.venv/
+/venv/
+/models/
+/k2-fsa/
+/.tools/
+node_modules/
+dist/
+
+# Personal recordings, generated audio, and account/session data
+/data/
+/voice_data/
+/contect.txt
+*.wav
+*.m4a
+*.mp3
+*.flac
+*.ogg
+*.webm
+*.sqlite3*
+*.db
+
+# Credentials and local tool settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+/.aws/
+/.agents/
+/.codex/
+/.claude/
+
+# Python and editor caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+*.log
